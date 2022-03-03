@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly expenses</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        body{
+            background-color: rgb(229, 224, 194);
+        }
+        h1{
+            text-align: center;
+            color: rgb(23, 131, 231);
+        }
+        table{
+            text-align: center;
+            float: center;
+            color: rgb(216, 94, 45);
+            margin: 0 auto 0 auto;
+            width: 50%;
+        }
+        tr{
+            text-align: center;
+            height: 50px;
+        }
+        th{
+            color: cadetblue;
+        }
+        table, th, td{
+           border: 1px solid black;
+        }
+        .val{
+            text-align: center;
+            color: black;
+            font-size: 18px;
+        }
+        .canvas{
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 0 auto;
+        }
+    </style>
+<body>
+    <header>
+        <div>
+            <h1>Monthly expenses</h1>
+        </div>
+    </header>
+    <table id="myTable">
+        <tr>
+            <th>Sl no:</th>
+            <th>Items</th>
+            <th>Amount in ₹ </th>
+        </tr>
+        <tr>
+            <td><input type="text" name="Sl" value=1 class="Sln"></td>
+            <td><input type="text" name="Items"></td>
+            <td><input type="text" name="Amount" class="Amnt"></td>
+            <td><input type="button" class="button" value="Add another field" onclick="addField();"></td>
+        </tr>
+    </table>
+    <button class="Submit" onclick="total();">Submit</button>
+    <p><b id="ttl"></b></p>
+    <p id="info"></p>
+    <hr>
+    <canvas id="myChart" style="width:100%;max-width:600px" class="canvas"></canvas>
+    <script type="text/javascript">
+        function addField (argument) {
+            var myTable = document.getElementById("myTable");
+            var currentIndex = myTable.rows.length;
+            var cc = currentIndex ++;
+            var currentRow = myTable.insertRow(-1);
+            
+            var Slbox = document.createElement("input");
+            Slbox.setAttribute("name", "Sl" + currentIndex);
+            Slbox.setAttribute("value", cc);
+            Slbox.setAttribute("class", "Sln");
+            Slbox.setAttribute("type", "text");
+
+            var Itemsbox = document.createElement("input");
+            Itemsbox.setAttribute("name", "Items" + currentIndex);
+
+            var Amountbox = document.createElement("input");
+            Amountbox.setAttribute("name", "Amount" + currentIndex);
+            Amountbox.setAttribute("class", "Amnt");
+
+            var currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(Slbox);
+
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(Itemsbox);
+
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(Amountbox);
+
+        }
+
+        function total(){
+            
+            var table = document.getElementById("myTable");
+            var Rows = table.rows.length;
+            var Amntdata = "" , sumVal = 0;
+           
+            for (var i = 1; i < Rows ; i++) {    
+            Amntdata = table.rows[i].cells[2].children[0].value;
+            console.log(typeof(Amntdata));
+            sumVal = sumVal + parseInt(Amntdata);
+            } document.getElementById("ttl").innerHTML = "Total amount = " + sumVal ;
+           
+            var Itemdata = ""
+            for (var j = 1; j < Rows ; j++ ){
+                Itemdata = table.rows[j].cells[1].children[0].value;
+                let str1 = Itemdata;
+                // const split_string = str1.split(" ");
+                // console.log(split_string);
+
+            }
+
+            var xValues = ["r", "d"];
+            var yValues = [10, 20];
+            var barColors = [
+              "#b91d47",
+              "#00aba9",
+              "#2b5797",
+              "#e8c3b9",
+              "#1e7145",
+              "purple"
+            ];
+            
+            new Chart("myChart", {
+              type: "doughnut",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                }
+              }
+            });
+        }
+    </script>
+</body>
+</html>
